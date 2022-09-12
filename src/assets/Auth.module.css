@@ -1,0 +1,23 @@
+.auth_sidebar {
+  width: 40%;
+  min-width: 450px;
+  max-width: 514px;
+}
+
+.image_container {
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.image_container img {
+  width: 125%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.password_toggler {
+  right: 0;
+  top: 50%;
+  transform: translate(-10%, -50%);
+  color: gray;
+}
