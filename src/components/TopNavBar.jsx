@@ -20,7 +20,7 @@ const TopNavbar = function (args) {
 
         {/* Navbar Menu */}
         <Collapse isOpen={isOpen} navbar>
-          <NavAnonUser />
+          <NavLoggedIn />
         </Collapse>
       </Navbar>
     </div>

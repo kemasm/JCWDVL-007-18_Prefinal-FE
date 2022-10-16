@@ -10,6 +10,7 @@ import {
   Button,
 } from "reactstrap";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const UserDropdown = function ({ direction, ...props }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -25,8 +26,8 @@ const UserDropdown = function ({ direction, ...props }) {
 
         <DropdownMenu className="p-3 mt-1" {...props}>
           <DropdownItem>My Posts</DropdownItem>
-          <DropdownItem divider />
-          <DropdownItem>Edit Profile</DropdownItem>
+          {/* <DropdownItem divider />
+          <DropdownItem>Edit Profile</DropdownItem> */}
           <DropdownItem divider />
           <DropdownItem>Account Settings</DropdownItem>
           <DropdownItem>Log Out</DropdownItem>
