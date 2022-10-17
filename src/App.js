@@ -51,7 +51,9 @@ function App() {
       <Router>
         <Switch>
           <PrivateRoute exact path="/" component={Home} />
-          <PrivateRoute exact path="/settings" component={SettingsPage} />
+          <Route exact path="/settings">
+            <SettingsPage />
+          </Route>
           <PrivateRoute exact path="/profile/:id" component={Profile} />
           <Route exact path="/login">
             <Login />

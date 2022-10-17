@@ -12,7 +12,7 @@ import TopNavbar from "../components/TopNavBar";
 import Footer from "../components/Footer";
 
 const SettingsPage = function (props) {
-  const params = props.match.params;
+  // const params = props.match.params;
 
   const [username, setUsername] = useState("");
   const { user } = useContext(Context);
@@ -31,7 +31,7 @@ const SettingsPage = function (props) {
     try {
       const authenticatedUser = JSON.parse(localStorage.getItem("auth"));
       const userId = authenticatedUser.id;
-      if (!userId || !user) {
+      if (!userId && !user) {
         return;
       }
       setIsWaiting(true);
@@ -52,7 +52,7 @@ const SettingsPage = function (props) {
     } catch (error) {
       setIsWaiting(false);
     }
-  }, [setIsWaiting, params]);
+  }, [setIsWaiting]);
 
   useEffect(() => {
     loadUser();
@@ -113,6 +113,33 @@ const SettingsPage = function (props) {
     setUserAvatar(response.data.avatar);
   };
 
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  const _resend = async (email) => {
+    const url = "http://localhost:8001/users/resend_mail";
+    try {
+      return await axios.post(url, { email });
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const resend = async () => {
+    setIsWaiting(true);
+
+    const email = JSON.parse(localStorage.getItem("auth")).user_email;
+    const response = await _resend(email);
+
+    if (response.status === 200) {
+      alert(`email was successfully sent! Please check your inbox.`);
+    } else {
+      alert("Internal server error");
+    }
+
+    await delay(5000);
+    setIsWaiting(false);
+  };
+
   if (!user) {
     return;
   }
@@ -163,6 +190,15 @@ const SettingsPage = function (props) {
                     hidden
                   />
                 </Label>
+
+                <Button
+                  className="btn-danger mb-0 mt-3 mx-3"
+                  disabled={isWaiting}
+                  hidden={user.user_is_verified}
+                  onClick={resend}
+                >
+                  Resend Verification Email
+                </Button>
               </FormGroup>
             </Form>
 
