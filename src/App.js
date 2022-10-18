@@ -15,6 +15,8 @@ import SettingsPage from "./pages/Settings";
 import Profile from "./pages/Profile";
 import PrivateRoute from "./components/common/PrivateRoute";
 import Verify from "./pages/Verify";
+import PostPage from "./pages/Post";
+import PostEditPage from "./pages/PostEdit";
 
 import Context from "./context";
 
@@ -55,6 +57,8 @@ function App() {
             <SettingsPage />
           </Route>
           <PrivateRoute exact path="/profile/:id" component={Profile} />
+          <Route exact path="/post/:id" component={PostPage} />
+          <PrivateRoute exact path="/post/edit/:id" component={PostEditPage} />
           <Route exact path="/login">
             <Login />
           </Route>
