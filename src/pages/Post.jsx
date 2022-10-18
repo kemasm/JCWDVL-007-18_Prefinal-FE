@@ -51,6 +51,8 @@ const PostPage = function (props) {
   const [comments, setComments] = useState([]);
   const [commentPage, setCommentPage] = useState(0);
   const [hasMoreComment, sethasMoreComment] = useState(true);
+  const [isLike, setIsLike] = useState(null);
+  const [likeCounter, setLikeCounter] = useState(0);
 
   const { user } = useContext(Context);
 
@@ -73,6 +75,7 @@ const PostPage = function (props) {
       } else {
         localStorage.setItem("auth", JSON.stringify(response.data[0]));
       }
+
       setIsWaiting(false);
     } catch (error) {
       setIsWaiting(false);
@@ -116,7 +119,6 @@ const PostPage = function (props) {
         alert(response.data.message);
       } else {
         let _comments = [];
-        console.log(_comments);
         for (let comment of response.data) {
           _comments.push(
             <CommentBlock
@@ -135,11 +137,35 @@ const PostPage = function (props) {
     }
   }, [setIsWaiting]);
 
+  let loadLikes = useCallback(async () => {
+    if (!params.id) {
+      return;
+    }
+
+    try {
+      setIsWaiting(true);
+      const authenticatedUser = JSON.parse(localStorage.getItem("auth"));
+      const userId = authenticatedUser.id;
+      const url = `http://localhost:8001/reactions/get/${params.id}/${userId}`;
+      const response = await axios.get(url);
+      if (response && response.data && response.data.message) {
+        alert(response.data.message);
+      } else {
+        setLikeCounter(response.data.like_count);
+        setIsLike(Boolean(response.data.is_like));
+      }
+      setIsWaiting(false);
+    } catch (error) {
+      setIsWaiting(false);
+    }
+  }, [setIsWaiting]);
+
   useEffect(() => {
     loadUser();
     loadPost();
     loadComment();
-  }, [loadUser, loadPost, loadComment]);
+    loadLikes();
+  }, [loadUser, loadPost, loadComment, loadLikes]);
 
   const handlePostComment = async () => {
     setIsWaiting(true);
@@ -211,6 +237,33 @@ const PostPage = function (props) {
     }
   };
 
+  const handleLike = async () => {
+    try {
+      setIsWaiting(true);
+      const _isLike = !isLike;
+
+      const url = _isLike
+        ? `http://localhost:8001/reactions/create`
+        : `http://localhost:8001/reactions/delete`;
+
+      const response = await axios.post(url, {
+        postId: post.id,
+        userId: user.id,
+      });
+      if (response.status === 200) {
+        setIsLike(_isLike);
+        loadLikes();
+      } else if (response.response) {
+        alert(response.response.data.message);
+      } else {
+        alert("Internal server error");
+      }
+    } catch (error) {
+      alert(error);
+    }
+    setIsWaiting(false);
+  };
+
   if (!user || !post) {
     return;
   } else {
@@ -270,9 +323,9 @@ const PostPage = function (props) {
                 className="btn-danger mb-0 mt-3"
                 // disabled={isWaiting}
                 // hidden={user.user_is_verified}
-                // onClick={resend}
+                onClick={handleLike}
               >
-                Like
+                {isLike ? "Unlike" : "Like"}
               </Button>
             </div>
           </div>
@@ -285,7 +338,7 @@ const PostPage = function (props) {
           >
             <div className="w-100 d-flex flex-column justify-content-center ">
               <div
-                className="bg-primary rounded mb-4"
+                className="bg-light rounded mb-4"
                 style={{
                   width: "100%",
                   marginRight: "1rem",
@@ -301,6 +354,9 @@ const PostPage = function (props) {
                     alignItems: "center",
                   }}
                 />
+              </div>
+              <div className="d-flex justify-content-end">
+                <h6>{likeCounter} likes</h6>
               </div>
 
               <div className="mb-5">
