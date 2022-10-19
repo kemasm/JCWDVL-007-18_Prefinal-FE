@@ -266,7 +266,7 @@ const PostPage = function (props) {
     return;
   } else {
     // console.log(user.id);
-    console.log(post);
+    // console.log(post);
     // console.log(comments);
   }
 
