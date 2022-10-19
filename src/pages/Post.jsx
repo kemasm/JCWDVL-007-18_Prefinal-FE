@@ -45,8 +45,6 @@ const PostPage = function (props) {
   const params = props.match.params;
 
   const [isWaiting, setIsWaiting] = useState(false);
-  const [isOwner, setIsOwner] = useState(false);
-  const [userAvatar, setUserAvatar] = useState(null);
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [commentPage, setCommentPage] = useState(0);
@@ -268,7 +266,7 @@ const PostPage = function (props) {
     return;
   } else {
     // console.log(user.id);
-    // console.log(post.post_created_by);
+    console.log(post);
     // console.log(comments);
   }
 
@@ -347,7 +345,7 @@ const PostPage = function (props) {
               >
                 <img
                   src={`http://localhost:8001${post.post_content}`}
-                  alt={post.post_caption}
+                  // alt={post.post_caption}
                   style={{
                     width: "100%",
                     justifyContent: "center",
@@ -357,6 +355,9 @@ const PostPage = function (props) {
               </div>
               <div className="d-flex justify-content-end">
                 <h6>{likeCounter} likes</h6>
+              </div>
+              <div className="d-flex justify-content-start mb-3 mx-3">
+                <p>{post.post_caption}</p>
               </div>
 
               <div className="mb-5">
