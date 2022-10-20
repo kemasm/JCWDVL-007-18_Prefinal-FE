@@ -18,32 +18,45 @@ import {
   Input,
 } from "reactstrap";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import axios from "axios";
 import Context from "../context";
 
 const UserDropdown = function ({ direction, ...props }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { user, setUser } = useContext(Context);
+
+  const history = useHistory();
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
+
+  const handleLogout = () => {
+    localStorage.removeItem("auth");
+    setUser(null);
+    history.push("/login");
+  };
+
+  if (!user) {
+    return;
+  }
 
   return (
     <div className="d-flex mx-3">
       <Dropdown isOpen={dropdownOpen} toggle={toggle} direction={direction}>
-        <DropdownToggle className="btn-primary rounded-circle">
-          K
+        <DropdownToggle className="rounded-circle">
+          {user.user_username[0]}
         </DropdownToggle>
 
         <DropdownMenu className="p-3" {...props}>
-          <DropdownItem>My Posts</DropdownItem>
-          {/* <DropdownItem divider />
-          <DropdownItem>Edit Profile</DropdownItem> */}
+          <DropdownItem tag={Link} to={`/profile/${user.user_username}`}>
+            My Posts
+          </DropdownItem>
           <DropdownItem divider />
           <DropdownItem tag={Link} to={"/settings"}>
             Account Settings
           </DropdownItem>
-          <DropdownItem>Log Out</DropdownItem>
+          <DropdownItem onClick={handleLogout}>Log Out</DropdownItem>
         </DropdownMenu>
       </Dropdown>
     </div>

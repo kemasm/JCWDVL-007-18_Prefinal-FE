@@ -11,7 +11,7 @@ import Footer from "../components/Footer";
 import Context from "../context";
 import { useEffect } from "react";
 
-const Profile = function (props) {
+const ProfileLIked = function (props) {
   const profileUsername = props.match.params.username;
   const { user } = useContext(Context);
 
@@ -31,7 +31,7 @@ const Profile = function (props) {
             <NavItem>
               <NavLink
                 id="profile_post_tab"
-                active={true}
+                active={false}
                 onClick={() => history.push(`/profile/${profileUsername}`)}
               >
                 {profileUsername}'s posts
@@ -41,7 +41,7 @@ const Profile = function (props) {
             <NavItem>
               <NavLink
                 id="liked_post_tab"
-                active={false}
+                active={true}
                 onClick={() =>
                   history.push(`/profile/liked/${profileUsername}`)
                 }
@@ -53,7 +53,7 @@ const Profile = function (props) {
         </div>
 
         <Posts
-          postsUrl={`http://localhost:8001/posts/user/${profileUsername}`}
+          postsUrl={`http://localhost:8001/posts/user/like/${profileUsername}`}
         />
       </div>
       <Footer />
@@ -61,4 +61,4 @@ const Profile = function (props) {
   );
 };
 
-export default Profile;
+export default ProfileLIked;

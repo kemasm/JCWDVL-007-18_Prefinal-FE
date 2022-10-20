@@ -49,10 +49,8 @@ const PostCard = function (props) {
 
             <div className="d-flex">
               <p className="mx-2">
-                <FontAwesomeIcon icon={faHeart} /> 225
-              </p>
-              <p>
-                <FontAwesomeIcon icon={faEye} /> 366.6k
+                <FontAwesomeIcon icon={faHeart} />{" "}
+                {props.post.reactions_count || 0}
               </p>
             </div>
           </CardSubtitle>
@@ -97,7 +95,7 @@ const Posts = function (props) {
   let loadPosts = useCallback(async () => {
     try {
       setIsWaiting(true);
-      const url = `http://localhost:8001/posts`;
+      const url = props.postsUrl;
       const response = await axios.get(url, {
         params: {
           posts_page: Number(postsPage),
@@ -133,7 +131,7 @@ const Posts = function (props) {
         return;
       }
       setIsWaiting(true);
-      const url = `http://localhost:8001/posts`;
+      const url = props.postsUrl;
       const response = await axios.get(url, {
         params: {
           posts_page: Number(postsPage) + 1,
@@ -155,6 +153,7 @@ const Posts = function (props) {
             owner_username: post.user_username,
             owner_url: `http://localhost:3000/profile/${post.user_username}`,
             owner_photoUrl: `http://localhost:3000/profile/${post.user_avatar}`,
+            reactions_count: post.post_number_of_reactions,
           };
           _posts.push(
             <PostCard post={postContent} key={`postcard_${post.id}`} />

@@ -11,7 +11,7 @@ const Home = function (props) {
       <div style={{ paddingBottom: "125px" }}>
         <TopNavbar color="light" expand="md" />
         <Hero />
-        <Posts />
+        <Posts postsUrl="http://localhost:8001/posts" />
       </div>
       <Footer />
     </div>
