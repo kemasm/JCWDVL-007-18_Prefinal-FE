@@ -49,14 +49,12 @@ const UserDropdown = function ({ direction, ...props }) {
         </DropdownToggle>
 
         <DropdownMenu className="p-3" {...props}>
-          <DropdownItem>
-            <a
-              style={{ textDecoration: "none", color: "black" }}
-              href={`/profile/${user.user_username}`}
-            >
-              My Posts
-            </a>
-          </DropdownItem>
+          <a
+            style={{ textDecoration: "none", color: "black" }}
+            href={`/profile/${user.user_username}`}
+          >
+            <DropdownItem>My Posts</DropdownItem>
+          </a>
           <DropdownItem divider />
           <DropdownItem tag={Link} to={"/settings"}>
             Account Settings

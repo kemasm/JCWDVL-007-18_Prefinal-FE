@@ -57,12 +57,13 @@ const ProfileHeader = function (props) {
                 }}
               >
                 <img
+                  className="text-center d-flex justify-content-center align-items-center text-white"
                   src={`http://localhost:8001${profile.user_avatar}`}
-                  alt={profile.user_username}
+                  alt={profile.user_username[0]}
                   style={{
                     width: "100%",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    height: "100%",
+                    fontSize: "2em",
                   }}
                 />
               </div>

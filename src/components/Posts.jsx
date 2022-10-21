@@ -112,6 +112,7 @@ const Posts = function (props) {
             owner_username: post.user_username,
             owner_url: `http://localhost:3000/profile/${post.user_username}`,
             owner_photoUrl: `http://localhost:3000/profile/${post.user_avatar}`,
+            reactions_count: post.post_number_of_reactions,
           };
           _posts.push(
             <PostCard post={postContent} key={`postcard_${post.id}`} />

@@ -17,7 +17,7 @@ const Profile = function (props) {
   const history = useHistory();
 
   return (
-    <div className="position-relative" style={{ minHeight: "100vh" }}>
+    <div className="position-relative" style={{ minHeight: "120vh" }}>
       <div style={{ paddingBottom: "125px" }}>
         <TopNavbar color="light" expand="md" />
         <ProfileHeader profileUsername={profileUsername} />
