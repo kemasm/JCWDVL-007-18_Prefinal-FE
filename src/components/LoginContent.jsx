@@ -146,7 +146,6 @@ const LoginContent = function (props) {
 
             <div className="d-flex justify-content-between align-items-center mx-3">
               <Button
-                disabled={isWaiting}
                 className="btn-danger"
                 onClick={login}
                 disabled={isWaiting}

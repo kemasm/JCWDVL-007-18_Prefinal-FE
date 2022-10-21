@@ -18,6 +18,7 @@ const SettingsPage = function (props) {
   const { user, setUser } = useContext(Context);
   const [isWaiting, setIsWaiting] = React.useState(false);
   const [userAvatar, setUserAvatar] = useState(null);
+  const [errorForm, setErrorForm] = useState("");
 
   const history = useHistory();
 
@@ -68,7 +69,7 @@ const SettingsPage = function (props) {
 
   const isInputFormatValid = (fullname, bio, username) => {
     if (!fullname || !bio || !username) {
-      alert("input can't be empty");
+      setErrorForm("inputs can't be empty");
       return false;
     }
     return true;
@@ -96,9 +97,9 @@ const SettingsPage = function (props) {
         loadUser();
         history.push(`/profile/${username}`);
       } else if (response.response) {
-        alert(response.response.data.message);
+        setErrorForm(response.response.data.message);
       } else {
-        alert("Internal server error");
+        setErrorForm("Internal server error");
       }
       setIsWaiting(false);
     }
@@ -110,8 +111,10 @@ const SettingsPage = function (props) {
     formData.append("avatar", e.target.files[0]);
     formData.append("userUuid", userUuid);
     const url = "http://localhost:8001/users/updateImage";
+    setIsWaiting(true);
     const response = await axios.post(url, formData);
     setUserAvatar(response.data.avatar);
+    setIsWaiting(false);
   };
 
   const delay = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -156,6 +159,9 @@ const SettingsPage = function (props) {
           >
             <h4 className="my-5">{username} / Account Settings</h4>
 
+            <h6 className="my-3 text-danger">
+              <small>{errorForm}</small>
+            </h6>
             <Form className="d-flex align-items-center mb-4">
               <div
                 className="bg-primary rounded-circle"
@@ -178,7 +184,9 @@ const SettingsPage = function (props) {
               </div>
               <FormGroup>
                 <Label
-                  className="btn btn-primary mb-0 mt-3"
+                  className={`btn btn-primary mb-0 mt-3 ${
+                    isWaiting ? "disabled" : ""
+                  }`}
                   for="profilePicture"
                 >
                   Change Profile Picture
@@ -204,35 +212,7 @@ const SettingsPage = function (props) {
             </Form>
 
             <Form>
-              <FormGroup>
-                <Label for="fullname">Full Name</Label>
-                <Input
-                  id="fullname"
-                  name="fullname"
-                  placeholder="Name"
-                  type="text"
-                  innerRef={fullnameRef}
-                />
-              </FormGroup>
-
-              <FormGroup>
-                <Label for="bio">Bio</Label>
-                <Input id="bio" name="text" type="textarea" innerRef={bioRef} />
-              </FormGroup>
-
-              <FormGroup>
-                <Label for="username">Username</Label>
-                <Input
-                  id="username"
-                  name="username"
-                  placeholder="Name"
-                  type="text"
-                  innerRef={usernameRef}
-                />
-              </FormGroup>
-
-              <FormGroup>
-                <Label for="email">Email</Label>
+              <FormGroup floating>
                 <Input
                   id="email"
                   name="email"
@@ -241,6 +221,34 @@ const SettingsPage = function (props) {
                   innerRef={emailRef}
                   disabled={true}
                 />
+                <Label for="email">Email</Label>
+              </FormGroup>
+
+              <FormGroup floating>
+                <Input
+                  id="username"
+                  name="username"
+                  placeholder="Name"
+                  type="text"
+                  innerRef={usernameRef}
+                />
+                <Label for="username">Username</Label>
+              </FormGroup>
+
+              <FormGroup floating>
+                <Input
+                  id="fullname"
+                  name="fullname"
+                  placeholder="Name"
+                  type="text"
+                  innerRef={fullnameRef}
+                />
+                <Label for="fullname">Full Name</Label>
+              </FormGroup>
+
+              <FormGroup floating>
+                <Input id="bio" name="text" type="textarea" innerRef={bioRef} />
+                <Label for="bio">Bio</Label>
               </FormGroup>
 
               <Button onClick={update} disabled={isWaiting}>
