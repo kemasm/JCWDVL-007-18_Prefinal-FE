@@ -53,7 +53,7 @@ function App() {
     >
       <Router>
         <Switch>
-          <PrivateRoute exact path="/" component={Home} />
+          <Route exact path="/" component={Home} />
           <Route exact path="/settings">
             <SettingsPage />
           </Route>
@@ -63,7 +63,7 @@ function App() {
             path="/profile/liked/:username"
             component={ProfileLiked}
           />
-          <Route exact path="/post/:id" component={PostPage} />
+          <PrivateRoute exact path="/post/:id" component={PostPage} />
           <PrivateRoute exact path="/post/edit/:id" component={PostEditPage} />
           <Route exact path="/login">
             <Login />

@@ -77,12 +77,17 @@ const NavLoggedIn = function (props) {
 
   const captionRef = useRef(null);
 
+  const history = useHistory();
+
   const handlePostPic = function (e) {
     setFilePreview(URL.createObjectURL(e.target.files[0]));
     setFile(e.target.files[0]);
   };
 
   const toggle = () => {
+    if (!user.user_is_verified) {
+      history.push("/verify");
+    }
     setFilePreview("");
     setFile();
     if (captionRef.current) {
@@ -196,11 +201,13 @@ const NavAnonUser = function (args) {
   return (
     <Nav className="justify-content-end w-100" navbar>
       <NavItem>
-        <NavLink href="/components/">Sign In</NavLink>
+        <NavLink href="/login">Sign In</NavLink>
       </NavItem>
 
       <NavItem>
-        <Button className="btn-danger">Sign Up</Button>
+        <Button href="/register" className="btn-danger">
+          Sign Up
+        </Button>
       </NavItem>
     </Nav>
   );

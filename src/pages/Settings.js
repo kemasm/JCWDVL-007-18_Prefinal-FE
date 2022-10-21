@@ -15,7 +15,7 @@ const SettingsPage = function (props) {
   // const params = props.match.params;
 
   const [username, setUsername] = useState("");
-  const { user } = useContext(Context);
+  const { user, setUser } = useContext(Context);
   const [isWaiting, setIsWaiting] = React.useState(false);
   const [userAvatar, setUserAvatar] = useState(null);
 
@@ -42,6 +42,7 @@ const SettingsPage = function (props) {
       } else {
         setUsername(response.data[0].user_username);
         setUserAvatar(response.data[0].user_avatar);
+        setUser(response.data[0]);
         localStorage.setItem("auth", JSON.stringify(response.data[0]));
         fullnameRef.current.value = response.data[0].user_full_name;
         bioRef.current.value = response.data[0].user_bio;
@@ -92,8 +93,8 @@ const SettingsPage = function (props) {
       const response = await _update(userUuid, fullname, bio, username);
       if (response.status === 200) {
         alert("profile updated");
-        setUsername(username);
-        history.push("/settings");
+        loadUser();
+        history.push(`/profile/${username}`);
       } else if (response.response) {
         alert(response.response.data.message);
       } else {

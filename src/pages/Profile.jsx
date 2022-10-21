@@ -13,13 +13,8 @@ import { useEffect } from "react";
 
 const Profile = function (props) {
   const profileUsername = props.match.params.username;
-  const { user } = useContext(Context);
 
   const history = useHistory();
-
-  if (!user) {
-    return;
-  }
 
   return (
     <div className="position-relative" style={{ minHeight: "100vh" }}>

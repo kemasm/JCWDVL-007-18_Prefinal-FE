@@ -46,26 +46,29 @@ const ProfileHeader = function (props) {
             sm="12"
             md="6"
           >
-            <div
-              className="bg-primary rounded-circle"
-              style={{
-                height: "65px",
-                width: "65px",
-                marginRight: "1rem",
-                overflow: "hidden",
-              }}
-            >
-              <img
-                src={`http://localhost:8001${profile.user_avatar}`}
-                alt={profile.user_username}
+            <div className="d-flex align-items-end mb-2">
+              <div
+                className="bg-primary rounded-circle"
                 style={{
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  height: "65px",
+                  width: "65px",
+                  marginRight: "1rem",
+                  overflow: "hidden",
                 }}
-              />
+              >
+                <img
+                  src={`http://localhost:8001${profile.user_avatar}`}
+                  alt={profile.user_username}
+                  style={{
+                    width: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                />
+              </div>
+              <h3>{profile.user_username}</h3>
             </div>
-            <h3>{profile.user_username}</h3>
+
             <h1>
               <strong>{profile.user_bio}</strong>
             </h1>

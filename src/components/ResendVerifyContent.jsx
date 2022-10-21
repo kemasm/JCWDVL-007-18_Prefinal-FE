@@ -71,9 +71,12 @@ const ResendVerifyContent = function (props) {
           </h3>
 
           <p className="mb-4 mx-3 ">
+            You need to verify you account before proceeding to the next page.
+            <br />
             We've sent verification link to your email, please check your inbox.
             <br />
-            Click button bellow if you don't get any message from us.
+            <br />
+            Click button below if you don't get any message from us.
           </p>
 
           <Form style={{ width: "100vw", maxWidth: "450px" }}>

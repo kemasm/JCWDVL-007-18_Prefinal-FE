@@ -66,31 +66,31 @@ const Posts = function (props) {
   const [postsPage, setPostsPage] = useState(0);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
-  const { user } = useContext(Context);
+  // const { user } = useContext(Context);
 
   const history = useHistory();
 
-  let loadUser = useCallback(async () => {
-    try {
-      const authenticatedUser = JSON.parse(localStorage.getItem("auth"));
-      const userId = authenticatedUser.id;
-      if (!userId && !user) {
-        return;
-      }
-      setIsWaiting(true);
-      const url = `http://localhost:8001/users/${userId}`;
-      const response = await axios.get(url);
-      if (response && response.data && response.data.message) {
-        alert(response.data.message);
-      } else {
-        localStorage.setItem("auth", JSON.stringify(response.data[0]));
-      }
+  // let loadUser = useCallback(async () => {
+  //   try {
+  //     const authenticatedUser = JSON.parse(localStorage.getItem("auth"));
+  //     const userId = authenticatedUser.id;
+  //     if (!userId && !user) {
+  //       return;
+  //     }
+  //     setIsWaiting(true);
+  //     const url = `http://localhost:8001/users/${userId}`;
+  //     const response = await axios.get(url);
+  //     if (response && response.data && response.data.message) {
+  //       alert(response.data.message);
+  //     } else {
+  //       localStorage.setItem("auth", JSON.stringify(response.data[0]));
+  //     }
 
-      setIsWaiting(false);
-    } catch (error) {
-      setIsWaiting(false);
-    }
-  }, [setIsWaiting]);
+  //     setIsWaiting(false);
+  //   } catch (error) {
+  //     setIsWaiting(false);
+  //   }
+  // }, [setIsWaiting]);
 
   let loadPosts = useCallback(async () => {
     try {
@@ -169,9 +169,9 @@ const Posts = function (props) {
   };
 
   useEffect(() => {
-    loadUser();
+    // loadUser();
     loadPosts();
-  }, [loadUser, loadPosts]);
+  }, [loadPosts]);
 
   window.onscroll = () => {
     if (
@@ -182,11 +182,11 @@ const Posts = function (props) {
     }
   };
 
-  if (!user) {
-    return;
-  } else {
-    // console.log(posts);
-  }
+  // if (!user) {
+  //   return;
+  // } else {
+  //   // console.log(posts);
+  // }
 
   return (
     <div className="container my-5">

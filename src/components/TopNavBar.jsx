@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Collapse, Navbar, NavbarToggler, NavbarBrand } from "reactstrap";
 
 // import NavAnonUser from "./NavAnonUser";
 import { NavLoggedIn, NavAnonUser } from "./Nav";
 
+import Context from "../context";
+
 const TopNavbar = function (args) {
+  const { user } = useContext(Context);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -20,7 +23,7 @@ const TopNavbar = function (args) {
 
         {/* Navbar Menu */}
         <Collapse isOpen={isOpen} navbar>
-          <NavLoggedIn />
+          {user ? <NavLoggedIn /> : <NavAnonUser />}
         </Collapse>
       </Navbar>
     </div>
