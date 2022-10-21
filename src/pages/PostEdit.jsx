@@ -71,6 +71,10 @@ const PostEditPage = function (props) {
   }, [loadUser, loadPost]);
 
   const handleDeletePost = async () => {
+    if (user.id !== post.post_created_by) {
+      return;
+    }
+
     try {
       setIsWaiting(true);
 
@@ -96,6 +100,10 @@ const PostEditPage = function (props) {
   };
 
   const handleUpdatePost = async () => {
+    if (user.id !== post.post_created_by) {
+      return;
+    }
+
     try {
       setIsWaiting(true);
       const url = `http://localhost:8001/posts/update`;
@@ -122,9 +130,9 @@ const PostEditPage = function (props) {
   if (!user || !post) {
     return;
   } else {
-    // console.log(user.id);
-    // console.log(post);
-    // console.log(comments);
+    if (user.id !== post.post_created_by) {
+      history.push("/");
+    }
   }
 
   return (

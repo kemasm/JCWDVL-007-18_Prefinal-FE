@@ -49,8 +49,13 @@ const UserDropdown = function ({ direction, ...props }) {
         </DropdownToggle>
 
         <DropdownMenu className="p-3" {...props}>
-          <DropdownItem tag={Link} to={`/profile/${user.user_username}`}>
-            My Posts
+          <DropdownItem>
+            <a
+              style={{ textDecoration: "none", color: "black" }}
+              href={`/profile/${user.user_username}`}
+            >
+              My Posts
+            </a>
           </DropdownItem>
           <DropdownItem divider />
           <DropdownItem tag={Link} to={"/settings"}>
@@ -140,9 +145,11 @@ const NavLoggedIn = function (props) {
       <Modal isOpen={modal} toggle={toggle} centered={true} {...props}>
         <ModalHeader toggle={toggle}>Upload Post</ModalHeader>
         <ModalBody>
-          <Form style={{ width: "100vw", maxWidth: "450px" }}>
+          <Form
+            style={{ width: "100vw", maxWidth: "450px", overflow: "hidden" }}
+          >
             <div
-              className="bg-primary mx-3"
+              className="bg-light mx-3"
               style={{
                 width: "100%",
                 overflow: "hidden",
@@ -150,7 +157,6 @@ const NavLoggedIn = function (props) {
             >
               <img
                 src={filePreview}
-                alt="test"
                 style={{
                   width: "100%",
                   justifyContent: "center",
