@@ -17,6 +17,13 @@ const RegisterContent = function (props) {
   const repeatPasswordRef = React.useRef(null);
 
   const [isWaiting, setIsWaiting] = React.useState(false);
+  const [fullnameError, setFullnameError] = React.useState("");
+  const [usernameError, setUsernameError] = React.useState("");
+  const [emailError, setEmailError] = React.useState("");
+  const [passwordError, setPasswordError] = React.useState("");
+  const [repeatPasswordError, setRepeatPasswordError] = React.useState("");
+  const [formError, setFormError] = React.useState("");
+
   const { setUser } = React.useContext(Context);
 
   const history = useHistory();
@@ -61,51 +68,64 @@ const RegisterContent = function (props) {
     password,
     repeatPassword
   ) => {
+    setEmailError("");
+    setFullnameError("");
+    setUsernameError("");
+    setPasswordError("");
+    setRepeatPasswordError("");
+    let isInputValid = true;
+
     if (validator.isEmpty(fullname)) {
-      alert("Please input your fullname");
-      return false;
+      setFullnameError("Please input your fullname");
+      isInputValid = false;
     }
     if (validator.isEmpty(username)) {
-      alert("Please input your username");
-      return false;
+      setUsernameError("Please input your username");
+      isInputValid = false;
     }
     if (validator.isEmpty(email)) {
-      alert("Please input your email");
-      return false;
+      setEmailError("Please input your email");
+      isInputValid = false;
     }
     if (!validator.isEmail(email)) {
-      alert("Email input has invalid format");
-      return false;
+      setEmailError("Email input has invalid format");
+      isInputValid = false;
     }
     if (validator.isEmpty(password)) {
-      alert("Please input your password");
-      return false;
+      setPasswordError("Please input your password");
+      isInputValid = false;
     }
     if (!validator.isLength(password, { min: 8 })) {
-      alert("Your password must have at least 8 characters");
-      return false;
+      setPasswordError("Your password must have at least 8 characters");
+      isInputValid = false;
     }
     if (!/\d/.test(password)) {
-      alert("Your password must have at least 1 numerical character");
-      return false;
+      setPasswordError(
+        "Your password must have at least 1 numerical character"
+      );
+      isInputValid = false;
     }
     if (!/\W/.test(password)) {
-      alert("Your password must have at least 1 symbol character");
-      return false;
+      setPasswordError("Your password must have at least 1 symbol character");
+      isInputValid = false;
     }
     if (!/[A-Z]/.test(password)) {
-      alert("Your password must have at least 1 uppercase character");
-      return false;
+      setPasswordError(
+        "Your password must have at least 1 uppercase character"
+      );
+      isInputValid = false;
     }
     if (validator.isEmpty(repeatPassword)) {
-      alert("Please input your confirm password");
-      return false;
+      setRepeatPasswordError(
+        "Please re-type your password here to confirm password"
+      );
+      isInputValid = false;
     }
     if (password !== repeatPassword) {
-      alert("Repeat password and password must be the same");
-      return false;
+      setRepeatPasswordError("Repeat password and password must be the same");
+      isInputValid = false;
     }
-    return true;
+    return isInputValid;
   };
 
   const _register = async ({
@@ -152,9 +172,9 @@ const RegisterContent = function (props) {
         );
         history.push("/login");
       } else if (response.response) {
-        alert(response.response.data.message);
+        setFormError(response.response.data.message);
       } else {
-        alert("Internal server error");
+        setFormError("Internal server error");
       }
       setIsWaiting(false);
     }
@@ -176,13 +196,17 @@ const RegisterContent = function (props) {
         <div>
           <h5 className="mb-4 mx-3 d-lg-none">JUGGGLE</h5>
 
-          <h3 className="mb-4 mx-3 ">
+          <h3 className="mb-4 mx-3">
             <strong>Sign Up to Jugggle</strong>
           </h3>
 
+          <h6 className="mb-4 mx-3 text-danger">
+            <small>{formError}</small>
+          </h6>
+
           <Form style={{ width: "100vw", maxWidth: "450px" }}>
             <Row className="px-3">
-              <Col xs="12" md="6">
+              <Col xs="12" md="12">
                 <FormGroup floating>
                   <Input
                     id="name"
@@ -192,9 +216,10 @@ const RegisterContent = function (props) {
                     innerRef={fullnameRef}
                   />
                   <Label for="name">Full Name</Label>
+                  <small className="text-danger">{fullnameError}</small>
                 </FormGroup>
               </Col>
-              <Col xs="12" md="6">
+              <Col xs="12" md="12">
                 <FormGroup floating>
                   <Input
                     id="username"
@@ -204,6 +229,7 @@ const RegisterContent = function (props) {
                     innerRef={usernameRef}
                   />
                   <Label for="username">Username</Label>
+                  <small className="text-danger">{usernameError}</small>
                 </FormGroup>
               </Col>
             </Row>
@@ -217,6 +243,7 @@ const RegisterContent = function (props) {
                 innerRef={emailRef}
               />
               <Label for="email">Email</Label>
+              <small className="text-danger">{emailError}</small>
             </FormGroup>
 
             <FormGroup className="position-relative mx-3" floating>
@@ -228,6 +255,7 @@ const RegisterContent = function (props) {
                 innerRef={passwordRef}
               />
               <Label for="examplePassword">Password</Label>
+              <small className="text-danger">{passwordError}</small>
             </FormGroup>
 
             <FormGroup className="position-relative mx-3" floating>
@@ -239,17 +267,22 @@ const RegisterContent = function (props) {
                 innerRef={repeatPasswordRef}
               />
               <Label for="examplePassword">Repeat Password</Label>
+              <small className="text-danger">{repeatPasswordError}</small>
             </FormGroup>
 
             <div className="d-flex justify-content-between align-items-center mx-3">
-              <Button className="btn-danger" onClick={register}>
+              <Button
+                className="btn-danger"
+                onClick={register}
+                disabled={isWaiting}
+              >
                 Create Account
               </Button>
             </div>
           </Form>
 
           <p className="mt-3 mx-3 d-lg-none" style={{ textAlign: "left" }}>
-            Already a member? <a href="#">Sign In</a>
+            Already a member? <a href="/login">Sign In</a>
           </p>
         </div>
       </div>

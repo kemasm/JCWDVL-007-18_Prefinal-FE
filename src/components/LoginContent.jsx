@@ -26,6 +26,7 @@ const LoginContent = function (props) {
   const passwordRef = useRef(null);
 
   const [isWaiting, setIsWaiting] = React.useState(false);
+  const [errorMsg, setErrorMsg] = React.useState("");
   const { setUser } = useContext(Context);
 
   const history = useHistory();
@@ -46,10 +47,10 @@ const LoginContent = function (props) {
 
   const isInputFormatValid = (email, password) => {
     if (!email || !password) {
-      alert("email and password must be filled");
+      setErrorMsg("email and password must be filled");
       return false;
     } else if (!validator.isEmail(email)) {
-      alert("email format is invalid");
+      setErrorMsg("email format is invalid");
       return false;
     }
     return true;
@@ -77,10 +78,10 @@ const LoginContent = function (props) {
         setIsWaiting(false);
         history.push("/");
       } else if (response.response) {
-        alert(response.response.data.message);
+        setErrorMsg(response.response.data.message);
         setIsWaiting(false);
       } else {
-        alert("Internal server error");
+        setErrorMsg("Internal server error");
         setIsWaiting(false);
       }
     }
@@ -105,6 +106,10 @@ const LoginContent = function (props) {
           <h3 className="mb-4 mx-3 ">
             <strong>Sign In to Jugggle</strong>
           </h3>
+
+          <div className="mx-3 my-3">
+            <small className="text-danger">{errorMsg}</small>
+          </div>
 
           <Form style={{ width: "100vw", maxWidth: "450px" }}>
             <FormGroup floating className="mx-3">
@@ -144,6 +149,7 @@ const LoginContent = function (props) {
                 disabled={isWaiting}
                 className="btn-danger"
                 onClick={login}
+                disabled={isWaiting}
               >
                 Sign In
               </Button>
@@ -152,7 +158,7 @@ const LoginContent = function (props) {
           </Form>
 
           <p className="mt-3 mx-3 d-lg-none" style={{ textAlign: "left" }}>
-            Not a member yet? <a href="#">Sign Up Now</a>
+            Not a member yet? <a href="/register">Sign Up Now</a>
           </p>
         </div>
       </div>
