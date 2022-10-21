@@ -39,12 +39,16 @@ const PostCard = function (props) {
                   className={`${styles.post_owner_photo} rounded-circle bg-primary`}
                 ></div>
               </a>
-              <a
-                href={props.post.owner_url}
-                className={`${styles.post_owner_link} mx-2`}
-              >
-                <strong>{props.post.owner_username}</strong>
-              </a>
+              <div>
+                <a
+                  href={props.post.owner_url}
+                  className={`${styles.post_owner_link} mx-2`}
+                >
+                  <strong>{props.post.owner_username}</strong>
+                </a>
+                <br />
+                <small>{props.post.post_created_date}</small>
+              </div>
             </div>
 
             <div className="d-flex">
@@ -113,6 +117,7 @@ const Posts = function (props) {
             owner_url: `http://localhost:3000/profile/${post.user_username}`,
             owner_photoUrl: `http://localhost:3000/profile/${post.user_avatar}`,
             reactions_count: post.post_number_of_reactions,
+            post_created_date: post.post_created_date,
           };
           _posts.push(
             <PostCard post={postContent} key={`postcard_${post.id}`} />
@@ -155,6 +160,7 @@ const Posts = function (props) {
             owner_url: `http://localhost:3000/profile/${post.user_username}`,
             owner_photoUrl: `http://localhost:3000/profile/${post.user_avatar}`,
             reactions_count: post.post_number_of_reactions,
+            post_created_date: post.post_created_date,
           };
           _posts.push(
             <PostCard post={postContent} key={`postcard_${post.id}`} />

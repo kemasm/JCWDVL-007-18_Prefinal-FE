@@ -35,7 +35,7 @@ const CommentBlock = function (props) {
       </div>
       <div className="w-75">
         <a>{props.user_username}</a> <small>{props.comment_created_date}</small>
-        <p>{props.comment_content}</p>
+        <p style={{ wordBreak: "break-word" }}>{props.comment_content}</p>
       </div>
     </div>
   );

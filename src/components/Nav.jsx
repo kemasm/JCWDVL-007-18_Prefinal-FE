@@ -111,6 +111,13 @@ const NavLoggedIn = function (props) {
       return false;
     }
 
+    if (!file.name.match(/\.(jpg|jpeg|png|gif)$/i)) {
+      alert("file is not an image file");
+      setFile(null);
+      setIsWaiting(false);
+      return false;
+    }
+
     const formData = new FormData();
     formData.append("post_image", file);
     formData.append("post_created_by", userUuid);

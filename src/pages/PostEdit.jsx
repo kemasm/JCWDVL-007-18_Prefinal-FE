@@ -106,6 +106,10 @@ const PostEditPage = function (props) {
 
     try {
       setIsWaiting(true);
+      if (!editCaptionRef.current.value) {
+        alert("caption field cannot be empty");
+        return;
+      }
       const url = `http://localhost:8001/posts/update`;
       const response = await axios.post(url, {
         postId: post.id,

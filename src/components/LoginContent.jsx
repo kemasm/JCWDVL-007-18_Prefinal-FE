@@ -49,9 +49,6 @@ const LoginContent = function (props) {
     if (!email || !password) {
       setErrorMsg("email and password must be filled");
       return false;
-    } else if (!validator.isEmail(email)) {
-      setErrorMsg("email format is invalid");
-      return false;
     }
     return true;
   };
@@ -120,7 +117,7 @@ const LoginContent = function (props) {
                 type="email"
                 innerRef={emailRef}
               />
-              <Label for="exampleEmail">Email</Label>
+              <Label for="exampleEmail">Email or Username</Label>
             </FormGroup>
 
             <FormGroup className="position-relative mx-3" floating>
