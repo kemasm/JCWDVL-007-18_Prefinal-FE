@@ -19,6 +19,7 @@ const SettingsPage = function (props) {
   const [isWaiting, setIsWaiting] = React.useState(false);
   const [userAvatar, setUserAvatar] = useState(null);
   const [errorForm, setErrorForm] = useState("");
+  const [isVerified, setIsVerified] = useState(true);
 
   const history = useHistory();
 
@@ -43,6 +44,7 @@ const SettingsPage = function (props) {
       } else {
         setUsername(response.data[0].user_username);
         setUserAvatar(response.data[0].user_avatar);
+        setIsVerified(response.data[0].user_is_verified);
         setUser(response.data[0]);
         localStorage.setItem("auth", JSON.stringify(response.data[0]));
         fullnameRef.current.value = response.data[0].user_full_name;
@@ -85,6 +87,10 @@ const SettingsPage = function (props) {
   };
 
   const update = async () => {
+    if (!isVerified) {
+      return;
+    }
+
     const userUuid = user.id;
     const { fullname, bio, username } = getInputs();
     const isValid = isInputFormatValid(fullname, bio, username);
@@ -106,6 +112,9 @@ const SettingsPage = function (props) {
   };
 
   const uploadImage = async (e) => {
+    if (!isVerified) {
+      return;
+    }
     const userUuid = user.id;
     const formData = new FormData();
     formData.append("avatar", e.target.files[0]);
@@ -140,7 +149,7 @@ const SettingsPage = function (props) {
       alert("Internal server error");
     }
 
-    await delay(5000);
+    await delay(30000);
     setIsWaiting(false);
   };
 
@@ -157,14 +166,27 @@ const SettingsPage = function (props) {
             className="w-100 px-3"
             style={{ minHeight: "100px", maxWidth: "650px" }}
           >
-            <h4 className="my-5">{username} / Account Settings</h4>
+            <h4 className="mt-5">{username} / Account Settings</h4>
 
-            <h6 className="my-3 text-danger">
+            <div className="p-3 bg-warning rounded mt-5" hidden={isVerified}>
+              <h6>
+                <small>
+                  Please verify your account before updating your profile.
+                  <br />
+                  We've sent verification link to your email.
+                  <br />
+                  You can send a new verification link by pressing the button
+                  below.
+                </small>
+              </h6>
+            </div>
+
+            <h6 className="mb-3 mt-5 text-danger">
               <small>{errorForm}</small>
             </h6>
             <Form className="d-flex align-items-center mb-4">
               <div
-                className="bg-primary rounded-circle"
+                className="bg-secondary rounded-circle"
                 style={{
                   height: "85px",
                   width: "85px",
@@ -173,19 +195,20 @@ const SettingsPage = function (props) {
                 }}
               >
                 <img
-                  src={`http://localhost:8001${userAvatar}`}
-                  alt={username}
+                  className="text-center d-flex justify-content-center align-items-center text-white"
+                  src={userAvatar ? `http://localhost:8001${userAvatar}` : ""}
+                  alt={user.user_username[0]}
                   style={{
                     width: "100%",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    height: "100%",
+                    fontSize: "2em",
                   }}
                 />
               </div>
               <FormGroup>
                 <Label
                   className={`btn btn-primary mb-0 mt-3 ${
-                    isWaiting ? "disabled" : ""
+                    isWaiting || !isVerified ? "disabled" : ""
                   }`}
                   for="profilePicture"
                 >
@@ -203,7 +226,7 @@ const SettingsPage = function (props) {
                 <Button
                   className="btn-danger mb-0 mt-3 mx-3"
                   disabled={isWaiting}
-                  hidden={user.user_is_verified}
+                  hidden={isVerified}
                   onClick={resend}
                 >
                   Resend Verification Email
@@ -231,6 +254,7 @@ const SettingsPage = function (props) {
                   placeholder="Name"
                   type="text"
                   innerRef={usernameRef}
+                  disabled={!isVerified}
                 />
                 <Label for="username">Username</Label>
               </FormGroup>
@@ -242,16 +266,23 @@ const SettingsPage = function (props) {
                   placeholder="Name"
                   type="text"
                   innerRef={fullnameRef}
+                  disabled={!isVerified}
                 />
                 <Label for="fullname">Full Name</Label>
               </FormGroup>
 
               <FormGroup floating>
-                <Input id="bio" name="text" type="textarea" innerRef={bioRef} />
+                <Input
+                  id="bio"
+                  name="text"
+                  type="textarea"
+                  innerRef={bioRef}
+                  disabled={!isVerified}
+                />
                 <Label for="bio">Bio</Label>
               </FormGroup>
 
-              <Button onClick={update} disabled={isWaiting}>
+              <Button onClick={update} disabled={isWaiting || !isVerified}>
                 Submit
               </Button>
             </Form>
